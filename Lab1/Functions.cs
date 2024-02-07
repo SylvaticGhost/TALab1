@@ -1,6 +1,6 @@
 ﻿namespace Lab1;
 
-public class Functions
+public static class Functions
 {
     public static int CountZeroInMatrix(int[][] matrix)
     {
