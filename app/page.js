@@ -5,6 +5,7 @@ import {useState} from "react";
 export default function Home() {
   let [rows, setRows] = useState(4)
   let [columns, setColumns] = useState(4)
+  const url = "http://localhost:5035";
 
   let [matrix, setMatrix] = useState()
   function generateMatrix(n, m) {
@@ -12,7 +13,7 @@ export default function Home() {
     for (let i = 0; i < n; i++) {
       matrix.push('')
       for (let j = 0; j < m; j++) {
-        matrix[i] = matrix[i] + ' ' + String( Math.floor(Math.random()*10) )
+        matrix[i] = matrix[i] + ' ' + String( Math.floor(Math.random()*10) )//Exuse
       }
     }
     setMatrix(matrix.join('\n'))
@@ -43,6 +44,35 @@ export default function Home() {
     }
 
     console.log(arr)
+    HttpMessage(arr)
+  }
+  
+  async function HttpMessage(arr) {
+    console.log("in httpMessage")
+    fetch(url + "/Main/CountZero/", {
+      //mode: 'no-cors',
+      method: 'POST', // Optional, defaults to GET
+      body: JSON.stringify({ Containing: arr }), // Optional, for sending data
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length' : '<calculated when request is sent>',
+        'Host' : '<calculated when request is sent>',
+        'Accept' : '*/*',
+        'AcceptEncoding' : 'gzip, deflate, br',
+        'Connection' : 'keep-alive'
+      }
+    })
+        .then(response => response.json()) // Parse JSON response
+        .then(data => {
+          // Handle successful response
+          console.log(data);
+        })
+        .catch(error => {
+          // Handle errors
+          console.error(error);
+        });
+    
+      console.log(arr)
   }
 
   return (
@@ -53,7 +83,7 @@ export default function Home() {
 
         <textarea id="message"
                   className="block p-2.5 w-full h-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="fill in the matrix using a space as a separator between elements and a line break as a separator between rows" value={matrix} onChange={(e) => {setMatrix(e.target.value)}}></textarea>
+                  placeholder="Fill in the matrix using a space as a separator between elements and a line break as a separator between rows" value={matrix} onChange={(e) => {setMatrix(e.target.value)}}></textarea>
 
       </div>
       <div id="random_box " className='flex-auto w-30'>
