@@ -5,6 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy",
+        b => b.WithOrigins("http://localhost:3000/").AllowAnyMethod().AllowAnyMethod());
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,3 +23,4 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
+

@@ -8,7 +8,7 @@ namespace Lab1;
 [Route("[controller]")]
 public class MainController : ControllerBase
 {
-   [HttpPut("CountZero")]
+   [HttpPost("CountZero")]
    public int CountZeroInMatrix(Matrix? matrix)
    {
       if(matrix is not null)

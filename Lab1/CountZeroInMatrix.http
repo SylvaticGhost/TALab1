@@ -1,5 +1,5 @@
 ﻿@Lab1_HostAddress = http://localhost:5035
-PUT {{Lab1_HostAddress}}/Main/CountZero/
+POST {{Lab1_HostAddress}}/Main/CountZero/
 Content-Type: application/json
 
 {
