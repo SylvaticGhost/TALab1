@@ -8,8 +8,6 @@ namespace Lab1;
 [Route("[controller]")]
 public class MainController : ControllerBase
 {
-   public MainController() {}
-   
    [HttpPut("CountZero")]
    public int CountZeroInMatrix(Matrix? matrix)
    {

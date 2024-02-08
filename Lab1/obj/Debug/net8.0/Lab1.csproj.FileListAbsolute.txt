@@ -32,3 +32,4 @@ G:\OP code\TA\Lab1\Lab1\obj\Debug\net8.0\Lab1.pdb
 G:\OP code\TA\Lab1\Lab1\obj\Debug\net8.0\Lab1.genruntimeconfig.cache
 G:\OP code\TA\Lab1\Lab1\obj\Debug\net8.0\ref\Lab1.dll
 G:\OP code\TA\Lab1\Lab1\bin\Debug\net8.0\Newtonsoft.Json.dll
+G:\OP code\TA\Lab1\Lab1\obj\Debug\net8.0\Lab1.sourcelink.json
