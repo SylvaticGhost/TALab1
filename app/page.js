@@ -5,11 +5,11 @@ import {useState} from "react";
 export default function Home() {
   let [rows, setRows] = useState(4)
   let [columns, setColumns] = useState(4)
-  const url = "http://localhost:5035";
+  const URL = "http://localhost:5035";
 
   let [matrix, setMatrix] = useState()
   function generateMatrix(n, m) {
-    let matrix = []
+    let matrix = [] 
     for (let i = 0; i < n; i++) {
       matrix.push('')
       for (let j = 0; j < m; j++) {
@@ -47,32 +47,28 @@ export default function Home() {
     HttpMessage(arr)
   }
   
-  async function HttpMessage(arr) {
+  function HttpMessage(arr) {
     console.log("in httpMessage")
-    fetch(url + "/Main/CountZero/", {
-      //mode: 'no-cors',
-      method: 'POST', // Optional, defaults to GET
-      body: JSON.stringify({ Containing: arr }), // Optional, for sending data
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length' : '<calculated when request is sent>',
-        'Host' : '<calculated when request is sent>',
-        'Accept' : '*/*',
-        'AcceptEncoding' : 'gzip, deflate, br',
-        'Connection' : 'keep-alive'
-      }
-    })
-        .then(response => response.json()) // Parse JSON response
-        .then(data => {
-          // Handle successful response
-          console.log(data);
-        })
-        .catch(error => {
-          // Handle errors
-          console.error(error);
-        });
-    
-      console.log(arr)
+
+     axios.post(URL + "/Main/CountZero/", {
+      Containing: arr
+    }, {
+       //   headers: {
+       //     'Content-Type': 'application/json',
+       //     'Content-Length' : '<calculated when request is sent>',
+       //     'Host' : '<calculated when request is sent>',
+       //     'Accept' : '*/*',
+       //     'AcceptEncoding' : 'gzip, deflate, br',
+       //     'Connection' : 'keep-alive'
+       // }
+     })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    console.log(arr)
   }
 
   return (
