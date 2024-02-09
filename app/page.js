@@ -1,6 +1,7 @@
 'use client'
 
 import {useState} from "react";
+import axios, {post} from "axios";
 
 export default function Home() {
   let [rows, setRows] = useState(4)
@@ -9,7 +10,7 @@ export default function Home() {
 
   let [matrix, setMatrix] = useState()
   function generateMatrix(n, m) {
-    let matrix = [] 
+    let matrix = []
     for (let i = 0; i < n; i++) {
       matrix.push('')
       for (let j = 0; j < m; j++) {
@@ -49,26 +50,25 @@ export default function Home() {
   
   function HttpMessage(arr) {
     console.log("in httpMessage")
-
-     axios.post(URL + "/Main/CountZero/", {
+    
+    axios.post(URL + "/Main/CountZero", {
       Containing: arr
     }, {
-       //   headers: {
-       //     'Content-Type': 'application/json',
-       //     'Content-Length' : '<calculated when request is sent>',
-       //     'Host' : '<calculated when request is sent>',
-       //     'Accept' : '*/*',
-       //     'AcceptEncoding' : 'gzip, deflate, br',
-       //     'Connection' : 'keep-alive'
-       // }
-     })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    console.log(arr)
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept' : '*/*',
+          'AcceptEncoding' : 'gzip, deflate, br',
+      }
+    })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        console.log(arr)
+    
+      console.log(arr)
   }
 
   return (
