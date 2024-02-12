@@ -1,0 +1,11 @@
+﻿@Lab1_HostAddress = http://localhost:5035
+POST {{Lab1_HostAddress}}/Main/CountZero/
+Content-Type: application/json
+
+{
+  "containing": [
+    [0, 2, 3],
+    [3, 4, 5],
+    [9, 0, 7]
+  ]
+}
