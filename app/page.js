@@ -51,6 +51,8 @@ export default function Home() {
     console.log(arr)
     HttpMessage(arr)
   }
+
+  
   function validationGenerate () {
     if (rows > 1000 || rows < 2 || columns > 1000 || columns < 2) {
       alert('Enter a value between 2 and 1000')
@@ -60,6 +62,8 @@ export default function Home() {
     }
     return true
   }
+
+  
   function validationTextarea(e) {
     const regex = /^[\d\s\n]*$/;
     const input = e.target.value;
@@ -68,6 +72,8 @@ export default function Home() {
       e.target.value = input.replace(/[^\d\s\n]/g, ''); // Удаляем все символы, кроме цифр, пробелов и переносов строки
     }
   }
+
+  
   function HttpMessage(arr) {
     axios.post(URL + "/Main/CountZero", {
       Containing: arr
