@@ -4,50 +4,109 @@ import {useState} from "react";
 import axios, {post} from "axios";
 
 export default function Home() {
-  let [rows, setRows] = useState(4)
+  let [rows , setRows] = useState(4)
   let [columns, setColumns] = useState(4)
-  let [result, setResult] = useState('')
+  let [result, setResult] = useState(0)
   const URL = "http://localhost:5035";
 
   let [matrix, setMatrix] = useState()
   function generateMatrix(n, m) {
-    let matrix = []
-    for (let i = 0; i < n; i++) {
-      matrix.push('')
-      for (let j = 0; j < m; j++) {
-        matrix[i] = matrix[i] + ' ' + String( Math.floor(Math.random()*10) )//Exuse
+    n = Number(n)
+    m = Number(m)
+    if(checkValidSize(n, m)) {
+      let matrix = []
+      for (let i = 0; i < n; i++) {
+        matrix.push('')
+        for (let j = 0; j < m; j++) {
+          matrix[i] = matrix[i] + ' ' + String(Math.floor(Math.random() * 10))//Exuse
+        }
       }
+      setMatrix(matrix.join('\n'))
+      return matrix
     }
-    setMatrix(matrix.join('\n'))
-    return matrix
+  }
+  
+  function checkValidSize(n, m){
+    if(n.isEmpty || m.isEmpty)
+    {
+      alert("The field for number of rows or columns are empty\nYou should write a number");
+      return false;
+    }
+    else
+    {
+      if (!Number.isInteger(n)) 
+      {
+        alert("number of rows aren't an integer");
+        return false;
+      } 
+      else if (!Number.isInteger(m)) 
+      {
+        alert("number of columns aren't an integer")
+        return false;
+      }
+      else 
+        return true;
+    }
   }
 
   function readFile(event) {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      setMatrix(event.target.result)
-    };
+    if(CheckFormatOfFile(file.name))
+    {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        setMatrix(event.target.result)
+      };
 
-    reader.readAsText(file);
+      reader.readAsText(file);
+    }
+  }
+  
+  function CheckFormatOfFile(fileName) {
+    const allowedExtensions = [".txt", ".csv"];
+    const extension = fileName.split('.').pop().toLowerCase();
+    if (!allowedExtensions.includes(extension)) {
+      alert("Invalid file format!");
+      return false;
+    }
+    
+    return true;
   }
 
   function sendData() {
-    let arr = matrix.split('\n')
-
-    for (let i = 0; i < arr.length; i++) {
-      arr[i] = arr[i].trim()
-      arr[i] = arr[i].split(' ')
-      for (let j = 0; j < arr[i].length; j++) {
-        arr[i][j] = Number(arr[i][j])
+    try
+    {
+      if (matrix.length < 1)
+        alert("text field are empty, you should input data")
+      let arr = matrix.split('\n')
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].trim()
+        arr[i] = arr[i].split(' ')
+        for (let j = 0; j < arr[i].length; j++) {
+          arr[i][j] = Number(arr[i][j])
+        }
       }
-    }
 
-    console.log(arr)
-    HttpMessage(arr)
+      console.log(arr)
+      HttpMessage(arr)
+    }
+    catch {
+      alert("Trouble with inputting data\n check needed fields")
+    }
+  }
+
+  function validationTextArea(e) {
+    const regex = /^[\d\s\n]*$/;
+    const input = e.target.value;
+
+    if (!regex.test(input)) {
+      e.target.value = input.replace(/[^\d\s\n]/g, ''); 
+    }
   }
 
   function HttpMessage(arr) {
+    CheckInputMatrixInSize(arr, Number(rows), Number(columns))
+    
     axios.post(URL + "/Main/CountZero", {
       Containing: arr
     }, {
@@ -61,21 +120,52 @@ export default function Home() {
           setResult(String(response.data))
         })
         .catch(function (error) {
-          console.log(error);
+          console.log(error)
+          if(error.response.status === 400)
+            alert("Incorrect Input, you should check if input contains only numbers\n or invalid size")
+          else {
+            const msg = error.response
+            alert(error.response)
+          }
         });
+  }
+  
+  
+  function CheckInputMatrixInSize(matrix, n, m) {
+    checkValidSize(n, m);
+    const rowSize = matrix[0].length;
+    for(let i = 1; i < matrix.length; i++) {
+      if(matrix[i].length !== rowSize) {
+        alert("incorrect matrix size configuration");
+        return false;
+      }
+    }
+    
+    if(Number(matrix.length) !== Number(n)) {
+      alert("the number of rows in box and on the filed aren't the same\n Check number of row");
+      return false;
+    }
+    else if(rowSize !== m) {
+      alert("Number of columns aren't the same in the box and on the field\n Check number of columns");
+      return false;
+    }
+    
+    return true;
   }
 
   return (
       <>
         <main className="flex flex-row gap-7 justify-center p-10">
+          
           <div id="area" className='flex-auto w-30'>
             <h1 className='mb-10'>Fill in the matrix</h1>
 
             <textarea id="message"
                       className="block p-2.5 w-full h-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Fill in the matrix using a space as a separator between elements and a line break as a separator between rows"
-                      value={matrix} onChange={(e) => {
-              setMatrix(e.target.value)
+                      value={matrix} onKeyUp={e => validationTextArea(e)} onChange={(e) => {
+              setMatrix(e.target.value);
+              setResult("-");
             }}></textarea>
 
           </div>
@@ -86,7 +176,8 @@ export default function Home() {
               <label htmlFor="number-input" className="block mb-2 text-sm font-medium text-gray-900 ">Count of
                 rows:</label>
               <input type="number" id="number-input" aria-describedby="helper-text-explanation"
-                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-100 p-2.5 "
+                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
+                     focus:border-blue-500 block w-100 p-2.5 " min={1}
                      placeholder="" value={rows} onChange={(event) => {
                 setRows(event.target.value)
               }}/>
