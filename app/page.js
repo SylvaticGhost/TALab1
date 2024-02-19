@@ -72,7 +72,7 @@ export default function Home() {
   }
 
   function checkFormatOfFile(fileName) {
-    const allowedExtensions = ["txt", "csv"];
+    const allowedExtensions = ["txt"];
     const extension = fileName.split('.').pop().toLowerCase();
     if (!allowedExtensions.includes(extension)) {
       alert("Invalid file format!");
@@ -83,20 +83,26 @@ export default function Home() {
   }
 
   function sendData() {
-    const pattern = /\s{2,}/
+    const pattern7 = /^[\d\s\n]+$/
     try
     {
-      let arr = matrix.split('\n')
-      for (let i = 0; i < arr.length; i++) {
-        arr[i] = arr[i].trim()
-        arr[i] = arr[i].split(' ')
-        for (let j = 0; j < arr[i].length; j++) {
-          arr[i][j] = Number(arr[i][j])
-        }
-      }
 
-      console.log(arr)
-      HttpMessage(arr)
+      if (matrix.trim() === '') {
+        alert('Matrix is empty')
+      } else if (!pattern7.test(matrix )) {
+        alert('Matrix is not correct')
+      } else {
+        let arr = matrix.split('\n')
+        for (let i = 0; i < arr.length; i++) {
+          arr[i] = arr[i].trim()
+          arr[i] = arr[i].split(' ')
+          for (let j = 0; j < arr[i].length; j++) {
+            arr[i][j] = Number(arr[i][j])
+          }
+        }
+
+        HttpMessage(arr)
+      }
     }
     catch {
       alert("Trouble with inputting data\n check needed fields")
