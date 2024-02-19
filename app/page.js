@@ -18,7 +18,7 @@ export default function Home() {
       for (let i = 0; i < n; i++) {
         matrix.push('')
         for (let j = 0; j < m; j++) {
-          matrix[i] = matrix[i] + ' ' + String(Math.floor(Math.random() * 10))//Exuse
+          matrix[i] = matrix[i] + ' ' + String(Math.floor(Math.random() * 10))
         }
       }
       setMatrix(matrix.join('\n'))
@@ -68,9 +68,7 @@ export default function Home() {
 
   function checkDataFile(val) {
     const pattern1 = /^\d\s\n+$/;
-    const pattern2 = /\s{2,}/;
-
-    return pattern1.test(val) && !pattern2.test(val);
+    return !pattern1.test(val);
   }
 
   function checkFormatOfFile(fileName) {
@@ -85,10 +83,9 @@ export default function Home() {
   }
 
   function sendData() {
+    const pattern = /\s{2,}/
     try
     {
-      if (matrix.length < 1)
-        alert("text field are empty, you should input data")
       let arr = matrix.split('\n')
       for (let i = 0; i < arr.length; i++) {
         arr[i] = arr[i].trim()
