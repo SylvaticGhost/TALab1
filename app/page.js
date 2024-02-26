@@ -58,15 +58,16 @@ export default function Home() {
   }
 
   function validationTextArea(e) {
-    const regex = /^[\d\s\n]+$/;
+    const regex = /^(\s*-?\d+\s*)*\n*$/;
     const input = e.target.value;
 
     if (!regex.test(input)) {
-      e.target.value = input.replace(/[^\d\s\n]/g, '');
+      e.target.value = input.replace(/[^-\d\s\n]/g, '');
     }
   }
+
   function checkDataFile(val) {
-    const pattern1 = /^[\d\s\n]*$/
+    const pattern1 = /^(\s*-?\d+\s*)*\n*$/
 
     return pattern1.test(val);
   }
@@ -125,7 +126,7 @@ export default function Home() {
 
 
   function sendData() {
-    const pattern_send = /^[\d\s\n]+$/
+    const pattern_send = /^(\s*-?\d+\s*)*\n*$/
     try
     {
 
