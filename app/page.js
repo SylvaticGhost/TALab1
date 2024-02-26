@@ -155,29 +155,31 @@ export default function Home() {
 
 
   function sendDataToServer(arr) {
-    checkInputMatrixInSize(arr, Number(rows), Number(columns))
-
-    axios.post(URL + "/Main/CountZero", {
-      Containing: arr
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept' : '*/*',
-        'AcceptEncoding' : 'gzip, deflate, br',
-      }
-    })
-      .then(function (response) {
-        setResult(String(response.data))
-      })
-      .catch(function (error) {
-        console.log(error)
-        if(error.response.status === 400)
-          alert("Incorrect Input, you should check if input contains only numbers\n or invalid size")
-        else {
-          const msg = error.response
-          alert(error.response)
+    if (checkInputMatrixInSize(arr, Number(rows), Number(columns))) {
+      
+      axios.post(URL + "/Main/CountZero", {
+        Containing: arr
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'AcceptEncoding': 'gzip, deflate, br',
         }
-      });
+      })
+        .then(function (response) {
+          setResult(String(response.data))
+        })
+        .catch(function (error) {
+          console.log(error)
+          if (error.response.status === 400)
+            alert("Incorrect Input, you should check if input contains only numbers\n or invalid size")
+          else {
+            const msg = error.response
+            alert(error.response)
+          }
+        });
+
+    }
   }
 
 
