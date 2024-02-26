@@ -207,20 +207,29 @@ export default function Home() {
               rows:</label>
             <input type="number" id="number-input" aria-describedby="helper-text-explanation"
                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
-                     focus:border-blue-500 block w-100 p-2.5 " min={1}
+                     focus:border-blue-500 block w-100 p-2.5 " min="1"
                    placeholder="" value={rows} onChange={(event) => {
-              setRows(event.target.value)
+                setRows(event.target.value)
             }}/>
             <label htmlFor="number-input" className="block mt-3 mb-2 text-sm font-medium text-gray-900 ">Count of
               columns:</label>
             <input type="number" id="number-input" aria-describedby="helper-text-explanation"
                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-100 p-2.5 "
-                   placeholder="" value={columns} onChange={(event) => {
-              setColumns(event.target.value)
+                   min="1"  placeholder="" value={columns} onChange={(event) => {
+                       setColumns(event.target.value)
             }}/>
 
             <button type="button" onClick={() => {
-              generateMatrix(rows, columns)
+              if (rows < 1 && columns < 1) {
+                alert('Invalid value for rows and columns')
+              } else if (rows < 1) {
+                alert('Invalid value for rows')
+              } else if (columns < 1) {
+                alert('Invalid value for columns')
+              } else {
+                generateMatrix(rows, columns)
+              }
+
             }}
                     className="text-white mt-10 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Generate
             </button>
